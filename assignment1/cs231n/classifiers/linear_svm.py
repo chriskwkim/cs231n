@@ -34,11 +34,11 @@ def svm_loss_naive(W, X, y, reg):
       margin = scores[j] - correct_class_score + 1 # note delta = 1
       if margin > 0:
         loss += margin
-        # we'll end up adding X[i] to the jth column for every X[i] that
-        # contributed to the loss
-        dW[:, j] += X[i]
-        # this will trigger K times if K classes were wrong enough to add loss
+        # Computing the gradient analytically with Calculus
+        # For correct classes
         dW[:, y[i]] -= X[i]
+        # For incorrect classes
+        dW[:, j] += X[i]
 
   # Right now the loss is a sum over all training examples, but we want it
   # to be an average instead so we divide by num_train.
@@ -59,6 +59,9 @@ def svm_loss_naive(W, X, y, reg):
   # code above to compute the gradient.                                       #
   #############################################################################
 
+  # simply count the number of classes that didn’t meet the desired margin
+  # (and hence contributed to the loss function)
+  # and then the data vector xi scaled by this number is the gradient.
 
   return loss, dW
 
@@ -77,6 +80,8 @@ def svm_loss_vectorized(W, X, y, reg):
   # Implement a vectorized version of the structured SVM loss, storing the    #
   # result in loss.                                                           #
   #############################################################################
+  s = X.dot(W)
+  
   pass
   #############################################################################
   #                             END OF YOUR CODE                              #
