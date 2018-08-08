@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-__py*
 
 # C extensions
 *.so
@@ -22,6 +21,7 @@ sdist/
 var/
 wheels/
 datasets/
+__pycache__/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -104,3 +104,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+__pycache__/
+
