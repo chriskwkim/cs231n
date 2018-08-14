@@ -1,6 +1,65 @@
 import numpy as np
 from random import shuffle
 
+
+#
+# def svm_loss_naive(W, X, y, reg):
+#   """
+#   Structured SVM loss function, naive implementation (with loops).
+#   Inputs have dimension D, there are C classes, and we operate on minibatches
+#   of N examples.
+#   Inputs:
+#   - W: A numpy array of shape (D, C) containing weights.
+#   - X: A numpy array of shape (N, D) containing a minibatch of data.
+#   - y: A numpy array of shape (N,) containing training labels; y[i] = c means
+#     that X[i] has label c, where 0 <= c < C.
+#   - reg: (float) regularization strength
+#   Returns a tuple of:
+#   - loss as single float
+#   - gradient with respect to weights W; an array of same shape as W
+#   """
+#   dW = np.zeros(W.shape) # initialize the gradient as zero
+#
+#   # compute the loss and the gradient
+#   num_classes = W.shape[1]
+#   num_train = X.shape[0]
+#   loss = 0.0
+#   for i in range(num_train):
+#     scores = X[i].dot(W)
+#     correct_class_score = scores[y[i]]
+#     diff_count = 0
+#     for j in range(num_classes):
+#       if j == y[i]:
+#         continue
+#       margin = scores[j] - correct_class_score + 1 # note delta = 1
+#       if margin > 0:
+#         diff_count += 1
+#         dW[:, j] += X[i] # gradient update for incorrect rows
+#         loss += margin
+#     # gradient update for correct row
+#     dW[:, y[i]] += -diff_count * X[i]
+#
+#   # Right now the loss is a sum over all training examples, but we want it
+#   # to be an average instead so we divide by num_train.
+#   loss /= num_train
+#   dW /= num_train
+#   dW += reg*W # regularize the weights
+#   # Add regularization to the loss.
+#   loss += 0.5 * reg * np.sum(W * W)
+#
+#   #############################################################################
+#   # TODO:                                                                     #
+#   # Compute the gradient of the loss function and store it dW.                #
+#   # Rather that first computing the loss and then computing the derivative,   #
+#   # it may be simpler to compute the derivative at the same time that the     #
+#   # loss is being computed. As a result you may need to modify some of the    #
+#   # code above to compute the gradient.                                       #
+#   #############################################################################
+#
+#
+#   return loss, dW
+
+
 def svm_loss_naive(W, X, y, reg):
   """
   Structured SVM loss function, naive implementation (with loops).
@@ -35,12 +94,12 @@ def svm_loss_naive(W, X, y, reg):
       margin = scores[j] - correct_class_score + 1 # note delta = 1
       if margin > 0:
         loss += margin
-        margin_loss_count += 1
+        # margin_loss_count += 1
         # Computing the gradient analytically with Calculus
         # For incorrect classes
         dW[:, j] += X[i]
-    # For correct classes
-    dW[:, y[i]] = -1 * margin_loss_count * X[i]
+        # For correct classes
+        dW[:, y[i]] -= X[i]
 
   # Right now the loss is a sum over all training examples, but we want it
   # to be an average instead so we divide by num_train.
@@ -48,9 +107,13 @@ def svm_loss_naive(W, X, y, reg):
   dW /= num_train
 
   # Add regularization to the loss.
-  loss += reg * np.sum(W * W)
+  # loss += reg * np.sum(W * W)
   # that contribues to the gradient as well
-  dW += 2 * reg * W
+
+  # dW += 2 * reg * W
+  dW += reg * W  # regularize the weights
+  # Add regularization to the loss.
+  loss += 0.5 * reg * np.sum(W * W)
 
   #############################################################################
   # TODO:                                                                     #
